@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>基礎英語文法探險家</title>
+<link rel="preload" href="assets/home-hero.webp" as="image">
+<link rel="preload" href="assets/adventure-map.webp" as="image">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<section id="home" class="screen is-active" aria-label="首頁">
+  <div class="hero-art" aria-hidden="true"></div>
+  <div class="hero-vignette" aria-hidden="true"></div>
+  <header class="home-toolbar">
+    <button class="icon-btn" id="homeSettings" type="button" aria-label="設定">⚙</button>
+    <button class="icon-btn" id="homeSound" type="button" aria-label="音樂">🔊</button>
+  </header>
+  <main class="home-main">
+    <div class="brand-stack">
+      <span class="eyebrow">Grammar Story Quest</span>
+      <h1>基礎英語文法<br>探險家</h1>
+      <p>跟著小夥伴穿過森林、火山、村莊與城堡，把文法變成一場真正的冒險。</p>
+    </div>
+    <div class="home-actions">
+      <button class="primary-btn" id="startBtn" type="button">開始冒險</button>
+      <button class="secondary-btn" id="continueBtn" type="button">繼續旅程</button>
+    </div>
+    <div class="home-stats" aria-label="進度">
+      <div><strong id="homeStars">0</strong><span>星星</span></div>
+      <div><strong id="homeCoins">0</strong><span>金幣</span></div>
+      <div><strong id="homeCleared">0</strong><span>已完成關卡</span></div>
+    </div>
+  </main>
+</section>
+
+<section id="map" class="screen" aria-label="冒險地圖">
+  <header class="topbar">
+    <div class="titleline">
+      <span>🗺</span>
+      <strong>冒險地圖</strong>
+    </div>
+    <div class="hud-pills">
+      <span>★ <b id="mapStars">0</b></span>
+      <span>🪙 <b id="mapCoins">0</b></span>
+      <button class="icon-btn compact" id="mapSettings" type="button" aria-label="設定">⚙</button>
+    </div>
+  </header>
+  <main class="map-body">
+    <div class="map-scroll">
+      <div class="map-stage">
+        <img src="assets/adventure-map.webp" alt="" aria-hidden="true">
+        <div class="map-nodes" id="mapNodes"></div>
+      </div>
+    </div>
+    <aside class="map-summary" id="mapSummary" aria-live="polite"></aside>
+  </main>
+</section>
+
+<section id="game" class="screen" aria-label="關卡">
+  <header class="topbar game-topbar">
+    <div class="titleline">
+      <button class="icon-btn compact" id="backMap" type="button" aria-label="返回地圖">←</button>
+      <strong id="levelName">關卡</strong>
+    </div>
+    <div class="hud-pills">
+      <span>★ <b id="gameScore">0</b></span>
+      <span>🪙 <b id="gameCoins">0</b></span>
+      <button class="icon-btn compact" id="gameSettings" type="button" aria-label="設定">⚙</button>
+    </div>
+  </header>
+  <main class="game-body">
+    <section class="mission-strip">
+      <div>
+        <span id="stageCounter">階段 1 / 1</span>
+        <strong id="stageTitle"></strong>
+      </div>
+      <div class="progress-bar" aria-hidden="true"><i id="progressFill"></i></div>
+    </section>
+
+    <section class="companion-strip">
+      <div class="buddy" id="buddy">🐱</div>
+      <div class="buddy-copy">
+        <strong id="buddyTitle">準備好了！</strong>
+        <span id="buddyTalk">看清主詞，再出發。</span>
+      </div>
+      <div class="combo-pill" id="comboPill">0 Combo</div>
+    </section>
+
+    <section class="play-area" id="playArea" aria-live="polite"></section>
+  </main>
+</section>
+
+<section id="result" class="screen" aria-label="結果">
+  <div class="result-panel">
+    <div class="result-icon" id="resultIcon">🏆</div>
+    <h2 id="resultTitle">過關成功！</h2>
+    <div class="stars" id="resultStars" aria-label="星等"></div>
+    <p id="resultMessage"></p>
+    <div class="result-stats" id="resultStats"></div>
+    <div class="result-actions">
+      <button class="primary-btn" id="nextBtn" type="button">繼續冒險</button>
+      <button class="secondary-btn" id="retryBtn" type="button">再玩一次</button>
+    </div>
+  </div>
+</section>
+
+<div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="遊戲設定">
+  <div class="settings-panel">
+    <div class="settings-head">
+      <h2>遊戲設定</h2>
+      <button class="icon-btn compact" id="closeSettings" type="button" aria-label="關閉">×</button>
+    </div>
+    <label class="setting-row">
+      <span>背景音樂</span>
+      <button class="switch is-on" id="musicSwitch" type="button" aria-label="背景音樂"><i></i></button>
+    </label>
+    <label class="setting-row">
+      <span>音量</span>
+      <input class="range" id="volumeRange" type="range" min="0" max="100" value="42" aria-label="音量">
+    </label>
+    <label class="setting-row">
+      <span>音效</span>
+      <button class="switch is-on" id="sfxSwitch" type="button" aria-label="音效"><i></i></button>
+    </label>
+    <label class="setting-row">
+      <span>震動</span>
+      <button class="switch is-on" id="vibeSwitch" type="button" aria-label="震動"><i></i></button>
+    </label>
+    <div class="setting-row">
+      <span>重新開始</span>
+      <button class="secondary-btn small" id="resetSave" type="button">清除紀錄</button>
+    </div>
+  </div>
+</div>
+
+<template id="questionTemplate">
+  <article class="question-card">
+    <span class="q-label"></span>
+    <h2 class="q-text"></h2>
+    <p class="q-hint"></p>
+  </article>
+</template>
+
+<script src="game.js"></script>
+</body>
+</html>
